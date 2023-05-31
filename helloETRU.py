@@ -1,5 +1,5 @@
 import random
-
+#try
 # 扩展欧几里得算法
 def extended_gcd(a, b):
     if b == 0:
