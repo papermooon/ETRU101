@@ -36,21 +36,43 @@ def ess_div(x, y):
     # Compute the closest vector on the sublattice L :
     s = m * e1 + n * e2
     t = n * a - m * b
+
     x0 = arrange(s, d)
     x1 = arrange(t, d)
+
     r1 = EisensteinIntegers(x0 + x1, 2 * x1)
     B1 = ess_sub(x, ess_mul(y, r1))
 
     # Compute the closest vector on the coset ω + L :
     s_prime = s + Q
     t_prime = t - Q
+
     y0 = arrange(s_prime, d)
     y1 = arrange(t_prime, d)
+
     r2 = EisensteinIntegers(y0 + y1, 2 * y1 + 1)
     B2 = ess_sub(x, ess_mul(y, r2))
 
     res1 = ess_alt_square(B1)
     res2 = ess_alt_square(B2)
+
+    # print("e1", e1)
+    # print("e2", e2)
+    # print("Q", Q)
+    # print("d", d)
+    # print("s", s)
+    # print("t", t)
+    # print("x0", x0)
+    # print("x1", x1)
+    # print("r1", r1)
+    # print("B1", B1)
+    # print("s'", s_prime)
+    # print("t'", t_prime)
+    # print("y0", y0)
+    # print("y1", y1)
+    # print("r2", r2)
+    # print("B2", B2)
+
     if res1 < res2:
         return r1, B1
     elif res1 > res2:
@@ -62,8 +84,12 @@ def ess_div(x, y):
 
 
 def arrange(c, d):
-    c_hat = c % d
-    return (c - c_hat) / d
+    c_bar = c % d
+    if c_bar > abs(d) / 2:
+        c_bar -= abs(d)
+    elif c_bar <= -abs(d) / 2:
+        c_bar += abs(d)
+    return (c - c_bar) / d
 
 
 def ess_alt_square(q):
@@ -87,8 +113,15 @@ y1 = EisensteinIntegers(3, 2)
 z1 = ess_add(x1, y1)
 z2 = ess_sub(x1, y1)
 z3 = ess_mul(x1, y1)
-print(z1)
-print(z3)
-# print(arrange(-23, 1.235))
-print(ess_div(x1, y1)[0])
-print(ess_div(x1, y1)[1])
+# print(round(1/4,1))
+# print(z3)
+# print(arrange(11, 20))
+
+x2 = EisensteinIntegers(9, 7)
+y2 = EisensteinIntegers(4, 3)
+
+rrr = ess_div(x2, y2)
+# b = ess_div(x1, y1)[1]
+# print(ess_div(x1, y1)[0])
+# print(ess_div(x1, y1)[1])
+# print(ess_add(ess_mul(r, y1), b))
