@@ -117,11 +117,27 @@ z3 = ess_mul(x1, y1)
 # print(z3)
 # print(arrange(11, 20))
 
-x2 = EisensteinIntegers(9, 7)
-y2 = EisensteinIntegers(4, 3)
+x2 = EisensteinIntegers(14, 8)
+y2 = EisensteinIntegers(7, 4)
 
 rrr = ess_div(x2, y2)
 # b = ess_div(x1, y1)[1]
 # print(ess_div(x1, y1)[0])
 # print(ess_div(x1, y1)[1])
 # print(ess_add(ess_mul(r, y1), b))
+#
+# from nzmath import *
+#
+# ressss=arygcd.arygcd_w(14, 8, 7, 4)
+# print(ressss)
+# print(rrr[0])
+# print(rrr[1])
+#
+# zz=EisensteinIntegers(4, -3)
+# rr1=ess_div(x2, zz)
+# rr2=ess_div(y2, zz)
+#
+# print(rr1[0])
+# print(rr1[1])
+# print(rr2[0])
+# print(rr2[1])
