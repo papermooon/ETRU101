@@ -322,14 +322,18 @@ def test():
     # print("最大公因式可表示为："+str_d+"=("+str_u+")("+str1+")+("+str_v+")("+str2+")")
     # if d==[1]:
     #     print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_v)
-    list3 = [1,0,0,1,1]#N=5,p=2,乘积应该为[1]
-    list4=[1,1,0,1]
-    res=Multiplication2(list3,list4,p,N)
-    print("乘积:" + str(res))
+    # list3 = [1,0,0,1,1]#N=5,p=2,乘积应该为[1]
+    # list4=[1,1,0,1]
+    # res=Multiplication2(list3,list4,p,N)
+    # print("乘积:" + str(res))
     # list5=[1]
-    # list6=Division(list5,list3,p)
-    # print("gcd:"+str(list6))
-
+    # list6=[3]
+    # w,e,list7=Extend_Euclid(list5,list6,13,5)
+    # print("gcd:"+str(list7))
+    r=[2,0,2,-3]
+    b=[3,4,6]
+    t1=(r[0] * inverse_mod(b[0], p)) % p
+    print("应该上:" + str(t1))
 
 
 # for i in range(100):
