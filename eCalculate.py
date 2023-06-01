@@ -107,6 +107,12 @@ class EisensteinIntegers:
     def __str__(self):
         return "%d + %d*w" % (self.coe_a, self.coe_b)
 
+    def __bool__(self):
+        if self.coe_a == 0 and self.coe_b == 0:
+            return False
+        return True
+
+
 
 x1 = EisensteinIntegers(2, 1)
 y1 = EisensteinIntegers(3, 2)

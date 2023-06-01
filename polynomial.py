@@ -91,23 +91,6 @@ def translation(list):
         str_polynimial="0"
     return str_polynimial
 
-#定义多项式列表与数的乘法，参数list为被乘的多项式列表，a为int型的乘数。计算数域为Zp
-def Multiplication(list,a,p):
-    result=[]
-    for i in range(len(list)):
-        result.append(list[i]*a%p)
-    return result
-
-#定义多项式与多项式的乘法，参数list1，list2均为多项式的列表表示法。计算数域为Zp
-def Multiplication2(list1,list2,p):
-    a=list1.copy()
-    b=list2.copy()
-    result=[0]
-    for i in range(len(b)):
-        product=Multiplication(a,b[i],p)
-        product.extend([0]*(len(b)-1-i))
-        result=Add(result,product,p)
-    return result
 
 #定义多项式列表表示的减法，要求参数list1与list2等长，返回结果仍为等长的列表。计算数域为Zp
 def Subtraction(list1,list2,p):
@@ -156,6 +139,25 @@ def Add(list1,list2,p):
         else:
             break
     return result
+
+#定义多项式列表与数的乘法，参数list为被乘的多项式列表，a为int型的乘数。计算数域为Zp
+def Multiplication(list,a,p):
+    result=[]
+    for i in range(len(list)):
+        result.append(list[i]*a%p)
+    return result
+
+#定义多项式与多项式的乘法，参数list1，list2均为多项式的列表表示法。计算数域为Zp
+def Multiplication2(list1,list2,p):
+    a=list1.copy()
+    b=list2.copy()
+    result=[0]
+    for i in range(len(b)):
+        product=Multiplication(a,b[i],p)
+        product.extend([0]*(len(b)-1-i))
+        result=Add(result,product,p)
+    return result
+
 
 #扩展欧几里得算法，输入两个多项式列表list1、list2，返回二者的最大公因式列表d，以及满足d=u*list1+v*list2的u和v
 #默认list1、list2不等于0
@@ -308,6 +310,11 @@ def test():
     print("最大公因式可表示为："+str_d+"=("+str_u+")("+str1+")+("+str_v+")("+str2+")")
     if d==[1]:
         print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_v)
+    list3 = [1,0,0,1,1]
+    list4=[1,1,0,1]
+    res=Multiplication2(list3,list4,p)
+    g=gcd(list3,list4,p)
+    print("gcd:"+str(g))
 
 
 
