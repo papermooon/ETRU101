@@ -157,39 +157,6 @@ def Add(list1,list2,p):
             break
     return result
 
-#实现多项式带余除法,参数list1、list2均为列表，返回多项式商q的列表与余式r的列表
-def Division(list1,list2,p):#(list1次数更大，a%b的a）
-    #此处注意要深拷贝，浅拷贝会修改传进来的参数值
-    r=list1.copy()
-    b=list2.copy()
-    print("list1:")
-    print(r)
-    print("list2:")
-    print(b)
-    #print("r:" + r + "\n")
-    length=len(r)       #记录初始被除多项式位数
-    if len(r)<len(b):
-        return [0],list1
-    #print("len(r)>=len(b)\n")
-    q=[0]*(len(r)-len(b)+1)
-    for i in range(len(q)):
-        if len(r)>=len(b):
-            index=len(r)-len(b)+1       #确定所得商是商式的第index位
-            q[-index] = int(r[0] / b[0])
-            # 更新被除多项式
-            b_=b.copy()
-            b_.extend([0] * (len(r) - len(b)))
-            b_=Multiplication(b_,q[i],p)
-            r = Subtraction(r ,b_,p)
-            for j in range(len(r)):     #除去列表最左端无意义的0
-                if r[0]==0:
-                    r.remove(0)
-                else:
-                    break
-        else:
-            break
-    return q,r
-
 #扩展欧几里得算法，输入两个多项式列表list1、list2，返回二者的最大公因式列表d，以及满足d=u*list1+v*list2的u和v
 #默认list1、list2不等于0
 def Extend_Euclid(list1,list2,p):
@@ -210,25 +177,88 @@ def Extend_Euclid(list1,list2,p):
     d,u,v=f,u_2,v_2
     return d,u,v
 
+
+def inverse_mod(a, q):
+    """
+    计算模q环中a的模反元素
+    参数：    a: 要计算模反元素的数    q: 模数
+    返回值：    a在模q环中的模反元素
+    """
+    for x in range(1, q):
+        if (a * x) % q == 1:
+            return x
+    return None
+
+
+#实现多项式带余除法,参数list1、list2均为列表，返回多项式商q的列表与余式r的列表
+def Division(list1,list2,p):#(list1次数更大，a%b的a）
+    #此处注意要深拷贝，浅拷贝会修改传进来的参数值
+    r=list1.copy()
+    b=list2.copy()
+    #print("div开始，r："+str(r))
+    #print("div开始，b："+str(b))
+    length=len(r)       #记录初始被除多项式位数
+    if len(r)<len(b):
+        return [0],list1
+    q=[0]*(len(r)-len(b)+1)
+    #print("q:" + str(q))
+    for i in range(len(q)):
+        if len(r)>=len(b):
+            index = len(r)-len(b)+1       #确定所得商是商式的第index位
+            #print("index:" + str(index))
+            #q[-index] = int((r[0] / b[0])%p)#  增加%p！！！
+            q[-index] = (r[0] * inverse_mod(b[0], p)) % p
+            # 更新被除多项式
+            b_=b.copy()
+            b_.extend([0] * (len(r) - len(b)))
+            b_=Multiplication(b_,q[i],p)
+            #print("乘积 b_:" + str(b_))
+            r = Subtraction(r ,b_,p)
+            #print("减后 r:" + str(r))
+            for j in range(len(r)):     #除去列表最左端无意义的0
+                if r[0]==0:
+                    r.remove(0)
+                else:
+                    break
+            #print("去0后 r:" + str(r))
+        else:
+            break
+    return q,r
+
+
+#整数下求gcd
+#e.g.list1 = [1, 0, 0, 0, 0, -1]
+# list2 = [1, 0, 2, -3]
+# p=13
+# gcd： [9, 4]
 def gcd(list1, list2, p):
-    if list2 == [0]:
+    if list2 == []:
         return list1
     else:
         q, r = Division(list1, list2, p)
+        #print("商q:"+str(q)+"，余数："+str(r))
         return gcd(list2, r, p)
+
+#整数域求list2 对list1在模p下的逆元
+#e.g.list1 = [1, 0, 0, 0, 0, -1]
+# list2 = [1, 0, 0, 1, 1]
+# p=2
+# 逆元： [1, 1, 0, 1]
 def get_inverse(list1,list2,p): #list2的逆元
     f = list1.copy()
     g = list2.copy()
-    if gcd(f, g, p)!=1:
+    if gcd(f, g, p) != [1]:
         print("gcd！=1,逆元不存在")
-        return
+        return None
     p0 = [0]
     p1 = [1]
     p2 = [0]#不存在逆元
     while(True):
         q, r = Division(f, g, p)
-        if r == [0]:
+        print("q:"+str(q)+"r"+str(r))
+        if r == []:
             break
+        print("开始乘")
         tem = Multiplication2(p1, q, p)
         p2 = Subtraction2(p0, tem, p)
         str_p2 = translation(p2)
@@ -254,8 +284,8 @@ def test():
     str1 = translation(list1)
     # str_modular = input("请输入被模的多项式(形如2x^4+3x^3+x^2+1)：")#a%b的b
     # list2 = extract_info(str_modular)
-    #list2 = [1, 0, 2, -3]#p=13,gcd!=1时
-    list2 = [1, 0, 0, 1, 1]#p=2
+    list2 = [1, 0, 2, -3]#p=13,gcd!=1时
+    #list2 = [1, 0, 0, 1, 1]#p=2
     #list3 = Subtraction2(list1, list2, p)
     #print(list3)
     str2 = translation(list2)
@@ -267,8 +297,9 @@ def test():
     str_gcd = translation(list_gcd)
     print("上述两多项式的最大公因式为" + str_gcd)
     list_inverse = get_inverse(list1, list2, p)
-    str_inverse = translation(list_inverse)
-    print(str2+"在模"+str1+"的情况下，存在逆元："+str_inverse)
+    if list_inverse!=None:
+        str_inverse = translation(list_inverse)
+        print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_inverse)
     # d,v,u=Extend_Euclid(list1,list2,p)
     # str_d=translation(d)
     # str_u=translation(u)
