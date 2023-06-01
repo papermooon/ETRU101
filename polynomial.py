@@ -255,14 +255,14 @@ def get_inverse(list1,list2,p): #list2的逆元
     p2 = [0]#不存在逆元
     while(True):
         q, r = Division(f, g, p)
-        print("q:"+str(q)+"r"+str(r))
+        #print("q:"+str(q)+"r"+str(r))
         if r == []:
             break
-        print("开始乘")
+        #print("开始乘")
         tem = Multiplication2(p1, q, p)
         p2 = Subtraction2(p0, tem, p)
         str_p2 = translation(p2)
-        print("p2:" + str_p2)
+        #print("p2:" + str_p2)
         f = g
         g = r
         p0 = p1
@@ -284,8 +284,8 @@ def test():
     str1 = translation(list1)
     # str_modular = input("请输入被模的多项式(形如2x^4+3x^3+x^2+1)：")#a%b的b
     # list2 = extract_info(str_modular)
-    list2 = [1, 0, 2, -3]#p=13,gcd!=1时
-    #list2 = [1, 0, 0, 1, 1]#p=2
+    #list2 = [1, 0, 2, -3]#p=13,gcd!=1时
+    list2 = [1, 0, 0, 1, 1]#p=2
     #list3 = Subtraction2(list1, list2, p)
     #print(list3)
     str2 = translation(list2)
@@ -300,13 +300,15 @@ def test():
     if list_inverse!=None:
         str_inverse = translation(list_inverse)
         print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_inverse)
-    # d,v,u=Extend_Euclid(list1,list2,p)
-    # str_d=translation(d)
-    # str_u=translation(u)
-    # str_v=translation(v)
-    # print("上述两多项式的最大公因式为"+str_d )
-    # print("最大公因式可表示为："+str_d+"=("+str_u+")("+str1+")+("+str_v+")("+str2+")")
-    # print(str2+"在模"+str1+"的情况下，存在逆元："+str_v)
+    d,u,v=Extend_Euclid(list1,list2,p)
+    str_d=translation(d)
+    str_u=translation(u)
+    str_v=translation(v)
+    print("上述两多项式的最大公因式为"+str_d )
+    print("最大公因式可表示为："+str_d+"=("+str_u+")("+str1+")+("+str_v+")("+str2+")")
+    if d==[1]:
+        print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_v)
+
 
 
 # for i in range(100):
