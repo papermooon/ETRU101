@@ -1,3 +1,4 @@
+from nzmath import arygcd
 from sympy import *
 
 
@@ -106,17 +107,24 @@ def ess_mod(a, q):
 
 # a在模b下的逆元
 def ess_reverse(a, b):
-    x = ess_mod(a, b)
-    y = EisensteinIntegers(b.coe_a, b.coe_b)
+    y = EisensteinIntegers(a.coe_a, a.coe_b)
+    x = EisensteinIntegers(b.coe_a, b.coe_b)
 
     t = EisensteinIntegers(0, 0)
     newt = EisensteinIntegers(1, 0)
     r = EisensteinIntegers(x.coe_a, x.coe_b)
     newr = EisensteinIntegers(y.coe_a, y.coe_b)
 
+    # print(x)
+    # print(y)
+    # print(t)
+    # print(newt)
+    # print(r)
+    # print(newr)
+
     while newr.coe_a != 0 or newr.coe_b != 0:
         quotient = ess_div(r, newr)[0];
-        # print(quotient)
+
         temp = newt;
         newt = ess_sub(t, ess_mul(quotient, newt))
 
@@ -125,9 +133,14 @@ def ess_reverse(a, b):
         temp = newr;
         newr = ess_sub(r, ess_mul(quotient, newr))
         r = temp;
+
+    print(r)
     if r.coe_b != 0 or r.coe_a > 1:
         return "no1"
-    return ess_mod(t,x)
+    if t.coe_a >= 0:
+        return t
+    # return ess_add(t, x)
+    return ess_mod(t, x)
     # if t < 0:
     #     t = t + x;
     #     return t;
@@ -154,47 +167,141 @@ class EisensteinIntegers:
 
 x1 = EisensteinIntegers(2, 1)
 y1 = EisensteinIntegers(3, 2)
-z1 = ess_add(x1, y1)
-z2 = ess_sub(x1, y1)
-z3 = ess_mul(x1, y1)
-# print(round(1/4,1))
-# print(z3)
-# print(arrange(11, 20))
 
-x2 = EisensteinIntegers(3, 0)
-y2 = EisensteinIntegers(7, 0)
+x2 = EisensteinIntegers(3, 2)
+y2 = EisensteinIntegers(2, 4)
+
 
 # print(ess_mod(x2,y2))
 
-def check(a,b):
-    res=ess_reverse(a,b)
-    print(a,"在模",b,"下的逆元为：",res)
-    print(ess_mod(ess_mul(res,a),b))
-    print(ess_mod(ess_mul(a,res), b))
 
-check(x2,y2)
+def check(a, b):
+    print("gcd检测：", arygcd.arygcd_w(a.coe_a, a.coe_b, b.coe_a, b.coe_b))
+    res = ess_reverse(a, b)
+    print(a, "在模", b, "下的逆元为：", res)
+    print(ess_mod(ess_mul(res, a), b))
+    print(ess_div(ess_mul(a, res), b)[0])
+    print(ess_div(ess_mul(a, res), b)[1])
 
-# print(ess_mod(x2, y2))
-# print(ess_mod(ess_mod(x2, y2), y2))
 
-rrr = ess_div(x2, y2)
-# b = ess_div(x1, y1)[1]
-# print(ess_div(x1, y1)[0])
-# print(ess_div(x1, y1)[1])
-# print(ess_add(ess_mul(r, y1), b))
+# ess_reverse(x2, y2)
+# check(x2, y2)
+# print(ess_div(EisensteinIntegers(2,4),EisensteinIntegers(3,2))[0])
+# print(ess_div(EisensteinIntegers(2,4),EisensteinIntegers(3,2))[1])
 #
+# print(ess_div(EisensteinIntegers(3,2),EisensteinIntegers(1,1))[0])
+# print(ess_div(EisensteinIntegers(3,2),EisensteinIntegers(1,1))[1])
+# print(ess_div(EisensteinIntegers(2, 1), EisensteinIntegers(1, 3))[0])
+# print(ess_div(EisensteinIntegers(2, 1), EisensteinIntegers(1, 3))[1])
+
+
 # from nzmath import *
-#
 # ressss=arygcd.arygcd_w(14, 8, 7, 4)
-# print(ressss)
-# print(rrr[0])
-# print(rrr[1])
+
+
+def red(need, mode):
+    p0 = EisensteinIntegers(0, 0)
+    p1 = EisensteinIntegers(1, 0)
+
+    yushu = EisensteinIntegers(1, 0)
+
+    chushu = mode
+    beichu = need
+
+    while yushu.coe_a != 0 or yushu.coe_b != 0:
+        last_yushu = yushu
+        shang, yushu = ess_div(chushu, beichu)
+        P_ans = ess_mod(ess_sub(p0, ess_mul(p1, shang)), mode)
+        # P_ans=(p0-p1*shang)mod mode
+        print('商：', shang, "被除数", beichu, "余数", yushu, "ans", P_ans)
+
+        p0 = p1
+        p1 = P_ans
+
+        # print(shang,yushu)
+        chushu = beichu
+        beichu = yushu
+
+    # print(yushu)
+    # print(last_yushu)
+    # print(p0)
+    # print(p1)
+    # print("最终答案",p0)
+    if last_yushu.coe_b != 0:
+        return print("错误1")
+    if last_yushu.coe_a == 1:
+        return print("最终答案", p0)
+
+    if last_yushu.coe_a == -1:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(-1, 0)))
+    return print("错误2")
+
+
+# check(EisensteinIntegers(3, 2), EisensteinIntegers(7, 3))
+
+# print(ess_mod(EisensteinIntegers(-8, - 3), EisensteinIntegers(7, 3)))
 #
-# zz=EisensteinIntegers(4, -3)
-# rr1=ess_div(x2, zz)
-# rr2=ess_div(y2, zz)
-#
-# print(rr1[0])
-# print(rr1[1])
-# print(rr2[0])
-# print(rr2[1])
+# re=ess_div(EisensteinIntegers(8, 3), EisensteinIntegers(7, 3))
+# print(re[0])
+# print(re[1])
+
+def ess_inverse(need, mode):
+    if need.coe_a == 1 and need.coe_b == 0:
+        return print("最终答案", EisensteinIntegers(1, 0))
+    if need.coe_a == -1 and need.coe_b == 0:
+        return print("最终答案", EisensteinIntegers(-1, 0))
+
+    if need.coe_a == 0 and need.coe_b == 1:
+        return print("最终答案", EisensteinIntegers(-1, -1))
+    if need.coe_a == 0 and need.coe_b == -1:
+        return print("最终答案", EisensteinIntegers(1, 1))
+
+    if need.coe_a == 1 and need.coe_b == 1:
+        return print("最终答案", EisensteinIntegers(0, -1))
+    if need.coe_a == -1 and need.coe_b == -1:
+        return print("最终答案", EisensteinIntegers(0, 1))
+
+    gcd = arygcd.arygcd_w(need.coe_a, need.coe_b, mode.coe_a, mode.coe_b)
+    e_gcd = EisensteinIntegers(gcd[0], gcd[1])
+    if ess_alt_square(e_gcd) != 1:
+        return print("不可逆")
+
+    p0 = EisensteinIntegers(0, 0)
+    p1 = EisensteinIntegers(1, 0)
+
+    yushu = EisensteinIntegers(1, 0)
+
+    chushu = mode
+    beichu = need
+
+    while yushu.coe_a != 0 or yushu.coe_b != 0:
+        last_yushu = yushu
+        shang, yushu = ess_div(chushu, beichu)
+        P_ans = ess_mod(ess_sub(p0, ess_mul(p1, shang)), mode)
+
+        print('商：', shang, "被除数", beichu, "余数", yushu, "ans", P_ans)
+
+        p0 = p1
+        p1 = P_ans
+
+        chushu = beichu
+        beichu = yushu
+
+
+    if last_yushu.coe_a == 1 and last_yushu.coe_b == 0:
+        return print("最终答案", p0)
+    if last_yushu.coe_a == -1 and last_yushu.coe_b == 0:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(-1, 0)))
+
+    if last_yushu.coe_a == 0 and last_yushu.coe_b == 1:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(-1, -1)))
+    if last_yushu.coe_a == 0 and last_yushu.coe_b == -1:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(1, 1)))
+
+    if last_yushu.coe_a == 1 and last_yushu.coe_b == 1:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(0, -1)))
+    if last_yushu.coe_a == -1 and last_yushu.coe_b == -1:
+        return print("最终答案", ess_mul(p0, EisensteinIntegers(0, 1)))
+
+    return print("错误")
+

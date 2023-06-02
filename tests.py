@@ -34,6 +34,13 @@ def ine(y, x):
     newt = 1
     r = x
     newr = y
+
+    print(x)
+    print(y)
+    print(t)
+    print(newt)
+    print(r)
+    print(newr)
     while newr != 0:
         quotient = int(r / newr);
         temp = newt;
@@ -52,4 +59,4 @@ def ine(y, x):
         return t;
     return "no2"
 
-print(ass(3,7))
+print(ine(17,7))
