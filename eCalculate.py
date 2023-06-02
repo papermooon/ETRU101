@@ -247,19 +247,19 @@ def red(need, mode):
 
 def ess_inverse(need, mode):
     if need.coe_a == 1 and need.coe_b == 0:
-        return print("最终答案", EisensteinIntegers(1, 0))
+        return EisensteinIntegers(1, 0)
     if need.coe_a == -1 and need.coe_b == 0:
-        return print("最终答案", EisensteinIntegers(-1, 0))
+        return EisensteinIntegers(-1, 0)
 
     if need.coe_a == 0 and need.coe_b == 1:
-        return print("最终答案", EisensteinIntegers(-1, -1))
+        return EisensteinIntegers(-1, -1)
     if need.coe_a == 0 and need.coe_b == -1:
-        return print("最终答案", EisensteinIntegers(1, 1))
+        return EisensteinIntegers(1, 1)
 
     if need.coe_a == 1 and need.coe_b == 1:
-        return print("最终答案", EisensteinIntegers(0, -1))
+        return EisensteinIntegers(0, -1)
     if need.coe_a == -1 and need.coe_b == -1:
-        return print("最终答案", EisensteinIntegers(0, 1))
+        return EisensteinIntegers(0, 1)
 
     gcd = arygcd.arygcd_w(need.coe_a, need.coe_b, mode.coe_a, mode.coe_b)
     e_gcd = EisensteinIntegers(gcd[0], gcd[1])
@@ -279,29 +279,25 @@ def ess_inverse(need, mode):
         shang, yushu = ess_div(chushu, beichu)
         P_ans = ess_mod(ess_sub(p0, ess_mul(p1, shang)), mode)
 
-        print('商：', shang, "被除数", beichu, "余数", yushu, "ans", P_ans)
-
         p0 = p1
         p1 = P_ans
 
         chushu = beichu
         beichu = yushu
 
-
     if last_yushu.coe_a == 1 and last_yushu.coe_b == 0:
-        return print("最终答案", p0)
+        return p0
     if last_yushu.coe_a == -1 and last_yushu.coe_b == 0:
-        return print("最终答案", ess_mul(p0, EisensteinIntegers(-1, 0)))
+        return ess_mul(p0, EisensteinIntegers(-1, 0))
 
     if last_yushu.coe_a == 0 and last_yushu.coe_b == 1:
-        return print("最终答案", ess_mul(p0, EisensteinIntegers(-1, -1)))
+        return ess_mul(p0, EisensteinIntegers(-1, -1))
     if last_yushu.coe_a == 0 and last_yushu.coe_b == -1:
-        return print("最终答案", ess_mul(p0, EisensteinIntegers(1, 1)))
+        return ess_mul(p0, EisensteinIntegers(1, 1))
 
     if last_yushu.coe_a == 1 and last_yushu.coe_b == 1:
-        return print("最终答案", ess_mul(p0, EisensteinIntegers(0, -1)))
+        return ess_mul(p0, EisensteinIntegers(0, -1))
     if last_yushu.coe_a == -1 and last_yushu.coe_b == -1:
-        return print("最终答案", ess_mul(p0, EisensteinIntegers(0, 1)))
+        return ess_mul(p0, EisensteinIntegers(0, 1))
 
     return print("错误")
-
