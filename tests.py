@@ -52,4 +52,4 @@ def ine(y, x):
         return t;
     return "no2"
 
-print(ass(26,15))
+print(ass(3,7))

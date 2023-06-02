@@ -108,27 +108,33 @@ def ess_mod(a, q):
 def ess_reverse(a, b):
     x = ess_mod(a, b)
     y = EisensteinIntegers(b.coe_a, b.coe_b)
+
     t = EisensteinIntegers(0, 0)
     newt = EisensteinIntegers(1, 0)
     r = EisensteinIntegers(x.coe_a, x.coe_b)
     newr = EisensteinIntegers(y.coe_a, y.coe_b)
-    while newr.coe_a != 0:
-        quotient = ess_div(r, newr)[1];
+
+    while newr.coe_a != 0 or newr.coe_b != 0:
+        quotient = ess_div(r, newr)[0];
+        # print(quotient)
         temp = newt;
-        newt = t - quotient * newt;
+        newt = ess_sub(t, ess_mul(quotient, newt))
+
         t = temp;
 
         temp = newr;
-        newr = r - quotient * newr;
+        newr = ess_sub(r, ess_mul(quotient, newr))
         r = temp;
-    if r > 1:
+    if r.coe_b != 0 or r.coe_a > 1:
         return "no1"
-    if t < 0:
-        t = t + x;
-        return t;
-    if t > 0:
-        return t;
-    return "no2"
+    return ess_mod(t,x)
+    # if t < 0:
+    #     t = t + x;
+    #     return t;
+    # if t > 0:
+    #     return t;
+
+    # return "no2"
 
 
 # a+b*w
@@ -155,10 +161,21 @@ z3 = ess_mul(x1, y1)
 # print(z3)
 # print(arrange(11, 20))
 
-x2 = EisensteinIntegers(14, 8)
-y2 = EisensteinIntegers(7, 3)
-print(ess_mod(x2, y2))
-print(ess_mod(ess_mod(x2, y2), y2))
+x2 = EisensteinIntegers(3, 0)
+y2 = EisensteinIntegers(7, 0)
+
+# print(ess_mod(x2,y2))
+
+def check(a,b):
+    res=ess_reverse(a,b)
+    print(a,"在模",b,"下的逆元为：",res)
+    print(ess_mod(ess_mul(res,a),b))
+    print(ess_mod(ess_mul(a,res), b))
+
+check(x2,y2)
+
+# print(ess_mod(x2, y2))
+# print(ess_mod(ess_mod(x2, y2), y2))
 
 rrr = ess_div(x2, y2)
 # b = ess_div(x1, y1)[1]
