@@ -13,6 +13,17 @@ class EisensteinPoly:
         return len(self.list)
 
 
+def ep_toStr(ep):
+    res = "["
+    for i in range(len(ep.list)):
+        str_tem = str(ep.list[i].coe_a) + "+" + str(ep.list[i].coe_b) + "w"
+        res = res + str_tem
+        if i != len(ep.list)-1:
+            res = res + ","
+    res = res + "]"
+    return res
+
+
 #定义系数列表等长的多项式的减法
 # 要求输入Ep的list等长
 # 返回结果为等长的列表的Ep。
@@ -35,13 +46,13 @@ def ep_sub(ep1, ep2, q):
     a = ep1.list.copy()
     b = ep2.list.copy()
     if len(a) < len(b):
-        a.list.reverse()
-        a.list.extend([zero]*(len(b)-len(a)))
-        a.list.reverse()
+        a.reverse()
+        a.extend([zero]*(len(b)-len(a)))
+        a.reverse()
     elif len(a) > len(b):
-        b.list.reverse()
-        b.list.extend([zero] * (len(a) - len(b)))
-        b.list.reverse()
+        b.reverse()
+        b.extend([zero] * (len(a) - len(b)))
+        b.reverse()
     epa = EisensteinPoly(a)
     epb = EisensteinPoly(b)
     res_ploy = ep_subtraction(epa, epb, q)
@@ -68,7 +79,7 @@ def ep_add(ep1, ep2, q):
         quo, r = eC.ess_div(tem, q)
         result.append(r)
     for j in range(len(result)):  # 除去列表最左端无意义的0
-        if not result[0].bool():
+        if not result[0].judge():
             result.reverse()
             result.pop()
             result.reverse()
@@ -131,7 +142,7 @@ def ep_div(ep1, ep2, q):
         if len(r) >= len(b):
             index = len(r)-len(b)+1       #确定所得商是商式的第index位
             #print("index:" + str(index))
-            tem = eC.ess_mul(r[zero], ess_inverse(b[0], q))
+            tem = eC.ess_mul(r[0], eC.ess_reverse(b[0], q))
             qtem, quo[-index] = eC.ess_div(tem, q)
             # 更新被除多项式
             b_tem = b.copy()
@@ -141,7 +152,7 @@ def ep_div(ep1, ep2, q):
             ep_r = ep_sub(EisensteinPoly(r), ep_b_tem, q)
             #print("减后 r:" + str(r))
             for j in range(len(ep_r)):     #除去列表最左端无意义的0
-                if not ep_r.list[0].bool():
+                if not ep_r.list[0].judge():
                     ep_r.list.reverse()
                     ep_r.list.pop()
                     ep_r.list.reverse()
@@ -180,17 +191,24 @@ def ep_Extend_Euclid(ep1, ep2, q, N):
 
 
 def test():
-    q = int(input("请输入多项式计算数域Zq的q值："))
+    q1 = int(input("请输入q(形如a+bw)的a："))
+    q2 = int(input("请输入q(形如a+bw)的b："))
+    q = eC.EisensteinIntegers(q1, q2)
     N = int(input("请输入卷积多项式的N值："))
 
-    #e1=eC.EisensteinIntegers()
-    ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])#[1,0,0,0,0,-1]
-    ep2 = EisensteinPoly([one, zero, zero, one, one])#[1,0,0,1,1]
+    # eisen1=eC.EisensteinIntegers(1,0)
+    # eisen2=eC.EisensteinIntegers(0,0)
+    # ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])#[1,0,0,0,0,-1]
+    # ep2 = EisensteinPoly([one, zero, zero, one, one])#[1,0,0,1,1]
+
+    ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])  # [1,0,0,0,0,-1]
+    ep2 = EisensteinPoly([one, zero, zero, one, one])  # [1,0,0,1,1]
+
     d, u, v =ep_Extend_Euclid(ep1, ep2, q, N)
-    print("gcd："+str(d))
-    print("最大公因式可表示为：" + str(d) +
-          "=(" + str(u) + ")(" + str(ep1) +
-          ")+(" + str(v) + ")(" + str(ep2) + ")")
+    print("gcd："+ep_toStr(d))
+    print("最大公因式可表示为：" + ep_toStr(d) +
+          "\n=(" + ep_toStr(u) + ")(" + ep_toStr(ep1) +
+          ")\n+(" + ep_toStr(v) + ")(" + ep_toStr(ep2) + ")")
 
 
 if __name__ == '__main__':

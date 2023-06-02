@@ -159,7 +159,7 @@ class EisensteinIntegers:
     def __str__(self):
         return "%d + %d*w" % (self.coe_a, self.coe_b)
 
-    def __bool__(self):
+    def judge(self):
         if self.coe_a == 0 and self.coe_b == 0:
             return False
         return True
