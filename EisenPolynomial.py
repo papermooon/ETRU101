@@ -220,18 +220,20 @@ def test():
     # ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])#[1,0,0,0,0,-1]
     # ep2 = EisensteinPoly([one, zero, zero, one, one])#[1,0,0,1,1]
 
-    ep1 = EisensteinPoly([eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(0, 0),
-                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0),
-                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0),
+    ep1 = EisensteinPoly([eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),
+                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),
+                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),
+                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0),
                           eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(-1, 0)])  # [-1,4,0,-2,1]
-    ep2 = EisensteinPoly([eC.EisensteinIntegers(0, -1), eC.EisensteinIntegers(1, 0),
-                          eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(-1, 0),
-                          eC.EisensteinIntegers(1, 1), eC.EisensteinIntegers(-1, -1),
-                          eC.EisensteinIntegers(0, 1)])  # q=2+3w,N=7
-    ep2 = EisensteinPoly([eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(0, 1),
-                          eC.EisensteinIntegers(0, -1), eC.EisensteinIntegers(1, 0),
-                          eC.EisensteinIntegers(-1, -1), eC.EisensteinIntegers(-1, 0),
-                          eC.EisensteinIntegers(1, 1)])  # x^6+(w)x^5+(-w)x^4+x^3+(-1-w)x^2+(-1)x+1+w
+    # ep2 = EisensteinPoly([eC.EisensteinIntegers(0, -1), eC.EisensteinIntegers(1, 0),
+    #                       eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(-1, 0),
+    #                       eC.EisensteinIntegers(1, 1), eC.EisensteinIntegers(-1, -1),
+    #                       eC.EisensteinIntegers(0, 1)])  # q=2+3w,N=7
+    ep2 = EisensteinPoly([eC.EisensteinIntegers(-1, 0), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(1, 0),
+                          eC.EisensteinIntegers(1, 1), eC.EisensteinIntegers(0, 0),eC.EisensteinIntegers(0, 1), eC.EisensteinIntegers(1, 0),
+                          eC.EisensteinIntegers(-1, -1), eC.EisensteinIntegers(0, 1),eC.EisensteinIntegers(1, 0), eC.EisensteinIntegers(0, 0),
+                          eC.EisensteinIntegers(-1, -1), eC.EisensteinIntegers(1, 1),eC.EisensteinIntegers(-1, 0), eC.EisensteinIntegers(0, -1),
+                          eC.EisensteinIntegers(0, -1)])  # x^6+(w)x^5+(-w)x^4+x^3+(-1-w)x^2+(-1)x+1+w
 
     # mul = ep_mul(ep1, ep2, q, N)
     # print("mul：" + ep_toStr(mul))
@@ -246,6 +248,7 @@ def test():
     #q,r=Division(mul,[1,0,0,0,0,0,0,-1],41)
     quo,r= ep_div(mul, ep1, q)
     print("r:",ep_toStr(r))
+
 
 
 if __name__ == '__main__':
