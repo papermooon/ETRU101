@@ -179,15 +179,33 @@ def Extend_Euclid(list1,list2,p,N):
     u_1=[0]
     v_2=[0]
     v_1=[1]
-    while(g!=[]):
-        q,r=Division(f,g,p)
+    print("f,g:", f, g)
+    q, r = Division(f, g, p)
+    print("q,r:",q,r)
+    if r == []:
+        d, u, v = g, [0], [1]
+        return d, u, v
+    while(r!=[]):
+        print("循环中ep_quo:" + str(q) + ",\n循环中ep_r:" + str(r))
         u=Subtraction2(u_2,Multiplication2(q,u_1,p,N),p)
+        print("循环中ep_u:" + str(u))
         v=Subtraction2(v_2,Multiplication2(q,v_1,p,N),p)
+        print("循环中ep_v:" + str(v))
         f,g=g,r
         u_2,u_1=u_1,u
         v_2,v_1=v_1,v
+        print("循环中g:"+str(g))
+        q, r = Division(f, g, p)
+    if len(g)==1 :
+        r_inverse = inverse_mod(g[0], p)
+        print("r_inverse:" ,r_inverse)
+        u_1 = Multiplication(u_1, r_inverse, p)
+        print("u_2:", u_2)
+        v_1 = Multiplication(v_1, r_inverse, p)
+        print("v_2:", v_2)
+        g=[1]
 
-    d,u,v=f,u_2,v_2
+    d,u,v=g,u_1,v_1
     return d,u,v
 
 
@@ -221,6 +239,7 @@ def Division(list1,list2,p):#(list1次数更大，a%b的a）
             #print("index:" + str(index))
             #q[-index] = int((r[0] / b[0])%p)#  增加%p！！！
             q[-index] = (r[0] * inverse_mod(b[0], p)) % p
+            #print("q[-index]:"+str(q[-index]))
             # 更新被除多项式
             b_=b.copy()
             b_.extend([0] * (len(r) - len(b)))
@@ -314,12 +333,39 @@ def test():
     # if list_inverse!=None:
     #     str_inverse = translation(list_inverse)
     #     print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_inverse)
-    # d,u,v=Extend_Euclid(list1,list2,p, N)
-    # str_d=translation(d)
-    # str_u=translation(u)
-    # str_v=translation(v)
-    # print("上述两多项式的最大公因式为"+str_d )
-    # print("最大公因式可表示为："+str_d+"=("+str_u+")("+str1+")+("+str_v+")("+str2+")")
+
+
+    # t = inverse_mod(33,41)
+    # print(t)
+    # tem=Multiplication([8, 26, 8],t,p)
+    # #mul = Multiplication2([-1,7,-1],[1,0,-1,1,1,0,-1],41,8)
+    # mul = Multiplication2(tem, [8, 8, 25], p, N)
+    # print(mul)
+    # #q,r=Division(mul,[1,0,0,0,0,0,0,-1],41)
+    # q,r= Division(mul, [5,0, 1, -1], p)
+    # print("r:"+str(r))
+
+    # list1 = [1,0,0,0,0,0,0,-1]
+    # list2 = [1,0,-1,1,1,0,-1]
+    # list1 = [5,0, 1, -1]
+    # list2 = [8, 8, 25]
+    # list1 = [1, 0, 0, 0, 0, -1]
+    # list2 = [1, 0, 2, -3]
+    list1 = [1,0,0,0,0,0,0,-1]#p=41,N=7
+    list2 = [1,0,-1,1,1,0,-1]
+    # list1 = [1, 1,0]
+    # list2 = [1, 1]
+    str1 = translation(list1)
+    str2 = translation(list2)
+    d, u, v = Extend_Euclid(list1, list2, p, N)
+    print("d:",d)
+    str_d = translation(d)
+    str_u = translation(u)
+    str_v = translation(v)
+    print("上述两多项式的最大公因式为" + str_d)
+    print("最大公因式可表示为：" + str_d + "=(" + str_u + ")("
+          + str1 + ")+(" + str_v + ")(" + str2 + ")")
+
     # if d==[1]:
     #     print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_v)
     # list3 = [1,0,0,1,1]#N=5,p=2,乘积应该为[1]
@@ -330,10 +376,11 @@ def test():
     # list6=[3]
     # w,e,list7=Extend_Euclid(list5,list6,13,5)
     # print("gcd:"+str(list7))
-    r=[2,0,2,-3]
-    b=[3,4,6]
-    t1=(r[0] * inverse_mod(b[0], p)) % p
-    print("应该上:" + str(t1))
+    # r=[2,0,2,-3]
+    # b=[3,4,6]
+    # t1=(r[0] * inverse_mod(b[0], p)) % p
+    # print("应该上:" + str(t1))
+
 
 
 # for i in range(100):

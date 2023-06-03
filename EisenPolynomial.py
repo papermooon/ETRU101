@@ -123,6 +123,10 @@ def ep_mul(ep1, ep2, q, N):
                 ep_product.list.pop()
             ep_product.list.reverse()
         ep_result = ep_add(ep_result, ep_product, q)
+        #print("第"+str(i)+"次循环ep_result:"+ep_toStr(ep_result))
+    for i in range(len(ep_result)):
+        quo, ep_result.list[i] = eC.ess_div(ep_result.list[i], q)
+    #print("返回的ep_result:" + ep_toStr(ep_result))
     return ep_result
 
 
@@ -177,14 +181,18 @@ def ep_Extend_Euclid(ep1, ep2, q, N):
     ep_v_1 = EisensteinPoly([one])
     while(epg.list!= []):
         ep_quo, ep_r = ep_div(epf, epg, q)
+        print("循环中ep_quo:" + ep_toStr(ep_quo)+",\n循环中ep_r:" + ep_toStr(ep_r))
         tem1 = ep_mul(ep_quo, ep_u_1, q, N)
         ep_u = ep_sub(ep_u_2, tem1, q)
+        print("循环中ep_u:" + ep_toStr(ep_u))
         tem2 = ep_mul(ep_quo, ep_v_1, q, N)
         ep_v = ep_sub(ep_v_2, tem2, q)
+        print("循环中ep_v:" + ep_toStr(ep_v))
 
         epf, epg = epg, ep_r
         ep_u_2, ep_u_1 = ep_u_1, ep_u
         ep_v_2, ep_v_1 = ep_v_1, ep_v
+        print("循环中epg:" + ep_toStr(epg))
 
     ep_d, ep_u, ep_v = epf, ep_u_2, ep_v_2
     return ep_d, ep_u, ep_v
@@ -201,9 +209,15 @@ def test():
     # ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])#[1,0,0,0,0,-1]
     # ep2 = EisensteinPoly([one, zero, zero, one, one])#[1,0,0,1,1]
 
-    ep1 = EisensteinPoly([one, zero, zero, zero, zero, one])  # [1,0,0,0,0,-1]
-    ep2 = EisensteinPoly([one, zero, zero, one, one])  # [1,0,0,1,1]
+    ep1 = EisensteinPoly([eC.EisensteinIntegers(-1, 0), eC.EisensteinIntegers(4, 0),
+                          eC.EisensteinIntegers(0, 0), eC.EisensteinIntegers(-2, 0),
+                          eC.EisensteinIntegers(1, 0)])  # [-1,4,0,-2,1]
+    ep2 = EisensteinPoly([eC.EisensteinIntegers(2, 0), eC.EisensteinIntegers(5, 0),
+                          eC.EisensteinIntegers(-2, 0), eC.EisensteinIntegers(4, 0),
+                          eC.EisensteinIntegers(3, 0)])  # [2,5,-2,4,3]
 
+    # mul = ep_mul(ep1, ep2, q, N)
+    # print("mul：" + ep_toStr(mul))
     d, u, v =ep_Extend_Euclid(ep1, ep2, q, N)
     print("gcd："+ep_toStr(d))
     print("最大公因式可表示为：" + ep_toStr(d) +
