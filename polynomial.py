@@ -198,7 +198,7 @@ def Extend_Euclid(list1,list2,p,N):
         q, r = Division(f, g, p)
     if len(g)==1 :
         r_inverse = inverse_mod(g[0], p)
-        print("r_inverse:" ,r_inverse)
+        print("r_inverse:",r_inverse)
         u_1 = Multiplication(u_1, r_inverse, p)
         print("u_2:", u_2)
         v_1 = Multiplication(v_1, r_inverse, p)
@@ -265,6 +265,8 @@ def Division(list1,list2,p):#(list1次数更大，a%b的a）
 # gcd： [9, 4]
 def gcd(list1, list2, p):
     if list2 == []:
+        if len(list1)==1:
+            return 1#返回list1[0]和p的gcd
         return list1
     else:
         q, r = Division(list1, list2, p)
@@ -311,12 +313,12 @@ def get_inverse(list1,list2,p,N): #list2的逆元
 def test():
     p = int(input("请输入多项式计算数域Zp的p值："))
     N = int(input("请输入卷积多项式的N值："))
-    # # str_polynimial = input("请输入模的多项式(形如2x^4+3x^3+x^2+1)：")#a%b的a
-    # # list1 = extract_info(str_polynimial)
+    str_polynimial = input("请输入模的多项式(次数大的，形如2x^4+3x^3+x^2+1)：")#a%b的a
+    list1 = extract_info(str_polynimial)
     # list1 = [1, 0, 0, 0, 0, -1]
     # str1 = translation(list1)
-    # # str_modular = input("请输入被模的多项式(形如2x^4+3x^3+x^2+1)：")#a%b的b
-    # # list2 = extract_info(str_modular)
+    str_modular = input("请输入被模的多项式(形如2x^4+3x^3+x^2+1)：")#a%b的b
+    list2 = extract_info(str_modular)
     # #list2 = [1, 0, 2, -3]#p=13,gcd!=1时
     # list2 = [1, 0, 0, 1, 1]#p=2
     # #list3 = Subtraction2(list1, list2, p)
@@ -351,8 +353,8 @@ def test():
     # list2 = [8, 8, 25]
     # list1 = [1, 0, 0, 0, 0, -1]
     # list2 = [1, 0, 2, -3]
-    list1 = [1,0,0,0,0,0,0,-1]#p=41,N=7
-    list2 = [1,0,-1,1,1,0,-1]
+    #list1 = [1,0,0,0,0,0,0,-1]#p=41,N=7
+    #list2 = [1,0,-1,1,1,0,-1]
     # list1 = [1, 1,0]
     # list2 = [1, 1]
     str1 = translation(list1)
@@ -365,6 +367,9 @@ def test():
     print("上述两多项式的最大公因式为" + str_d)
     print("最大公因式可表示为：" + str_d + "=(" + str_u + ")("
           + str1 + ")+(" + str_v + ")(" + str2 + ")")
+    my_gcd=gcd(list1,list2,p)
+    str_my=translation([my_gcd])
+    print("上述两多项式的my_gcd为" + str_my)
 
     # if d==[1]:
     #     print(str2 + "在模" + str1 + "的情况下，存在逆元：" + str_v)
