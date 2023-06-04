@@ -146,9 +146,9 @@ def ep_div(ep1, ep2, q):
         if len(r) >= len(b):
             index = len(r)-len(b)+1       #确定所得商是商式的第index位
             #print("index:" + str(index))
-            print("b[0]:", b[0],", q:",q)
+
             rev=eC.ess_inverse(b[0], q)
-            print("b[0]reverse:", rev)
+
             tem = eC.ess_mul(r[0], rev)
             qtem, quo[-index] = eC.ess_div(tem, q)
             # 更新被除多项式
@@ -187,17 +187,17 @@ def ep_Extend_Euclid(ep1, ep2, q, N):
         ep_d, ep_u, ep_v = epg, [0], [1]
         return ep_d, ep_u, ep_v
     while(ep_r.list!= []):
-        print("循环中ep_quo:" + ep_toStr(ep_quo)+",\n循环中ep_r:" + ep_toStr(ep_r))
+
         tem1 = ep_mul(ep_quo, ep_u_1, q, N)
         ep_u = ep_sub(ep_u_2, tem1, q)
-        print("循环中ep_u:" + ep_toStr(ep_u))
+
         tem2 = ep_mul(ep_quo, ep_v_1, q, N)
         ep_v = ep_sub(ep_v_2, tem2, q)
-        print("循环中ep_v:" + ep_toStr(ep_v))
+
         epf, epg = epg, ep_r
         ep_u_2, ep_u_1 = ep_u_1, ep_u
         ep_v_2, ep_v_1 = ep_v_1, ep_v
-        print("循环中epg:" + ep_toStr(epg))
+
         ep_quo, ep_r = ep_div(epf, epg, q)
     if len(epg)==1:
         r_inverse = eC.ess_inverse(epg.list[0], q)
